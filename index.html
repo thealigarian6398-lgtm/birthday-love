@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Still Yours 💌</title>
+<style>
+  body {margin:0; padding:0; background: linear-gradient(to right,#1e1e2f,#2b2b45); color:white; font-family:Arial; text-align:center; overflow-x:hidden;}
+  .box {margin-top:80px;}
+  button {padding:12px 25px; font-size:16px; border:none; border-radius:25px; background:#ff4d6d; color:white; cursor:pointer; margin-top:20px;}
+  button:hover {background:#ff1e4d;}
+  .hidden {display:none; margin-top:30px; font-size:20px;}
+  .heart {position:absolute; width:20px; height:20px; background:red; transform:rotate(45deg); animation: float 4s linear infinite;}
+  .heart:after, .heart:before {content:""; position:absolute; width:20px; height:20px; background:red; border-radius:50%;}
+  .heart:before {top:-10px; left:0;}
+  .heart:after {left:10px; top:0;}
+  @keyframes float {0%{transform: translateY(0) rotate(45deg); opacity:1;} 100%{transform: translateY(-500px) rotate(45deg); opacity:0;}}
+</style>
+</head>
+<body>
+
+<div class="box" id="quiz">
+  <h1>Tap to start your surprise 😌</h1>
+  <button onclick="nextQuestion()">Start</button>
+  
+  <div id="question" class="hidden">
+    <p id="qtext"></p>
+    <div id="options"></div>
+  </div>
+
+  <div id="final" class="hidden">
+    <h2>Happy Birthday 🤍</h2>
+    <p>Talha… You mean the world to me. I cherish every moment with you. 💖</p>
+    <p>Still yours… forever. 🔥🔥🔥</p>
+  </div>
+</div>
+
+<audio id="bgmusic" autoplay loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// Quiz Questions + Options
+let quizData = [
+  { q: "Guess who is sending you this surprise? 😏", options: ["Your love", "Someone else", "Only me", "Forever yours"], answer: "Your love" },
+  { q: "How much do you miss me right now? 💖", options: ["A lot", "Just a little", "Can't wait to see you", "Forever"], answer: "A lot" },
+  { q: "Ready for a big hug in your heart? ✨", options: ["Yes!", "Absolutely", "Only you", "Forever mine"], answer: "Yes!" }
+];
+let index = 0;
+
+function nextQuestion(optionSelected){
+  let qDiv = document.getElementById('question');
+  let fDiv = document.getElementById('final');
+  let qText = document.getElementById('qtext');
+  let optsDiv = document.getElementById('options');
+
+  if(index === 0 && !qDiv.style.display){
+    qDiv.style.display = 'block';
+    showQuestion();
+  } else if(index < quizData.length){
+    index++;
+    showQuestion();
+  } else {
+    qDiv.style.display = 'none';
+    fDiv.style.display = 'block';
+  }
+}
+
+function showQuestion(){
+  let q = quizData[index];
+  let qText = document.getElementById('qtext');
+  let optsDiv = document.getElementById('options');
+  qText.innerText = q.q;
+  optsDiv.innerHTML = "";
+  q.options.forEach(opt => {
+    let btn = document.createElement('button');
+    btn.innerText = opt;
+    btn.onclick = ()=>nextQuestion(opt);
+    optsDiv.appendChild(btn);
+  });
+}
+
+// Floating Hearts Animation
+setInterval(()=>{
+  let heart = document.createElement('div');
+  heart.className='heart';
+  heart.style.left = Math.random()*window.innerWidth+'px';
+  heart.style.background='red';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),4000);
+},300);
+
+// Music autoplay
+let music = document.getElementById('bgmusic');
+music.volume = 0.3;
+music.play();
+</script>
+
+</body>
+</html>
